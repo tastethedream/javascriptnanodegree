@@ -788,11 +788,9 @@ We've spent a bit of time on this inside objects, but did you know that the valu
 Further Research
 Defining Methods on MDN
 "this" in Methods
-****************************************************************************************************************
 
-# Section 4 Beware of globals
 
-## Things that belong to objects
+
 
 
     
