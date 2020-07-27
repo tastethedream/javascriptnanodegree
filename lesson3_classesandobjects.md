@@ -83,5 +83,72 @@ console.log(engineer);
 console.log(programmer);
 // SoftwareDeveloper { favoriteLanguage: 'JavaScript' }
 ```
+### Constructor Functions Can Have Parameters
+Just like regular functions, one benefit of using constructor functions is that they can also accept arguments. Let's update the constructor above to accept a single argument, and assign the `name` property to it:
+```
+function SoftwareDeveloper(name) {
+  this.favoriteLanguage = 'JavaScript';
+  this.name = name;
+}
+```
+In the updated `SoftwareDeveloper()` function, whatever value is passed into the function will be the value of the object's `name` property. Let's check it out:
+```
+let instructor = new SoftwareDeveloper('Andrew');
+
+console.log(instructor);
+// SoftwareDeveloper { favoriteLanguage: 'JavaScript', name: 'Andrew' }
+```
+Great! And as we've seen above, we can create different objects using the same constructor. Let's call the same constructor function but pass a different argument this time:
+```
+let teacher = new SoftwareDeveloper('Richard');
+
+console.log(teacher);
+// SoftwareDeveloper { favoriteLanguage: 'JavaScript', name: 'Richard' }
+```
+Just to recap: above, we passed the string `'Richard'` into the `SoftwareDeveloper()` constructor function, then instantiated a new object. `'Richard'` then became the value of the name property in the `teacher` object.
+
+### video example
+```
+function Hero(name, role) {
+  this.name = name;
+  this.role = role;
+
+  this.introduce = function () {
+    console.log(`My name is ${this.name} and I am a ${this.role}.`);
+  };
+}
+
+let taylor = new Hero('Taylor', 'mother');
+
+let riley = new Hero('Riley', 'coach');
+
+taylor.name;
+riley.role;
+
+taylor.introduce();
+riley.introduce();
+```
+### QUESTION 1 OF 4
+Which of the following about constructor functions are true? Constructor functions (select all that apply)...
+
+**must be invoked with new**
+
+**are used to instantiate a new object**
+### QUESTION 2 OF 4
+What happens if a constructor function begins with a lower-case letter?
+**nothing it will still work**
+
+Capitalizing the first letter of a constructor function's name is just a naming convention. Though the first letter should be capitalized, inadvertently leaving it lower-cased still makes the constructor function (i.e., when invoked with the `new` operator, etc.).
+
+### code question
+
+
+
+
+
+
+
+
+
 
 
