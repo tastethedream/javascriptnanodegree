@@ -141,13 +141,92 @@ What happens if a constructor function begins with a lower-case letter?
 Capitalizing the first letter of a constructor function's name is just a naming convention. Though the first letter should be capitalized, inadvertently leaving it lower-cased still makes the constructor function (i.e., when invoked with the `new` operator, etc.).
 
 ### code question
+```
+/*
 
+Now it's your turn to create a constructor function. Declare a
+`Sandwich` constructor function that takes three parameters:
 
+1. `bread` (string) - the type of bread for the sandwich (e.g. "Wheat")
+2. `meat` (array) - the meats to put on the sandwich
+   (e.g. `[]` for a vegetarian sandwich!)
+3. `vegetables` (array) - the vegetables to include in the sandwich
 
+*/
 
+function Sandwich(bread, meat, vegetables){
+    this.bread = bread;
+    this.meat = meat;
+    this.vegetables =vegetables;
+    
+}
+```
+###  Omitting the new Operator 
+What happens if you inadvertently invoke a constructor function without using the `new` operator?
+```
+function SoftwareDeveloper(name) {
+   this.favoriteLanguage = 'JavaScript';
+   this.name = name;
+}
 
+let coder = SoftwareDeveloper('David');
 
+console.log(coder);
+// undefined
+```
+What's going on? Without using the `new` operator, no object was created. The function was invoked just like any other regular function. Since the function doesn't return anything (except `undefined`, which all functions return by default), the `coder` variable ended up being assigned to `undefined`.
 
+One more thing to note: since this function was invoked as a regular function, the value of `this` is also drastically different. Don't worry too much about this for now; we'll take a deep dive into the `this` keyword in the very next section!
+
+### Seeing the Object's Constructor (instanceof)
+What if we want to see if an object was created with a constructor function in the first place? We can use the `instanceof` (which returns a boolean) to give us some insight. Let's check it out!
+```
+function Developer(name) {
+  this.name = name;
+}
+
+let dev = new Developer('Veronika');
+
+typeof dev
+// "object"
+
+dev instanceof Developer;
+// true
+```
+ ### `instanceof` and the Prototype Chain
+ 
+Many times, however, it's a bit more complex: the `instanceof` operator actually tests whether or not that constructor appears in the **prototype chain** of an object. This means that we can't always check exactly which constructor created that object, but it does give us insight as to what other properties and methods an object may have access to.
+
+### QUESTION 4 OF 4
+Consider the following constructors:
+```
+function Finch(name) {
+  this.kingdom = 'Animalia';
+  this.name = name;
+}
+
+function Sparrow(name) {
+  this.kingdom = 'Animalia';
+  this.name = name;
+}
+Let's create an instance of each constructor:
+
+const atticus = new Finch('Atticus');
+const jack = new Sparrow('Jack');
+```
+What is the result when atticus instanceof Sparrow; is executed?
+
+**false is returned. Not only is Sparrow not the atticus object's constructor function -- the Sparrow object is nowhere to be found in atticus's prototype chain.**
+
+### Summary
+JavaScript's class system is built directly on using functions and objects. Calling a constructor function with the `new` operator instantiates a new object. The same constructor function can be used to create different objects.
+
+### Further Research
+The new operator on MDN (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new)
+The instanceof operator on MDN(https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof)
+
+## Section 3 The THIS Keyword
+### `this` in constructor functions
 
 
 
