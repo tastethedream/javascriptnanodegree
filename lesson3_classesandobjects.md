@@ -1118,6 +1118,122 @@ What does waffle.__proto__ refer to?
 
 **GuineaPig.prototype**
 
+### Object.create()
+At this point, we've reached a few roadblocks when it comes to inheritance. First, even though` __proto__` can access the prototype of the object it is called on, using it in any code you write is not good practice.
 
+What's more: we also shouldn't inherit *only* the prototype; this doesn't set up the prototype chain, and any changes that we made to a child object will also be reflected in a parent object.
+
+So how should we move forward?
+
+There's actually a way for us to set up the prototype of an object ourselves: using` Object.create()`. And best of all, this approach lets us manage inheritance without altering the prototype!
+
+`Object.create()` takes in a single object as an argument, and returns a new object with its` __proto__ `property set to what argument is passed into it. From that point, you simply set the returned object to be the prototype of the child object's constructor function. Let's check out an example!
+
+First, let's say we have a `mamma`l object with two properties: `vertebrate` and `earBones`:
+```
+const mammal = {
+  vertebrate: true,
+  earBones: 3
+};
+```
+Recall that `Object.create()` takes in a single object as an argument, and returns a new object. That new object's `__proto__` property is set to whatever was originally passed into `Object.create()`. Let's save that returned value to a variable,` rabbit`:
+```
+const rabbit = Object.create(mammal);
+We expect the new rabbit object to be blank, with no properties of its own:
+
+console.log(rabbit);
+
+// {}
+```
+However, `rabbit` should now be secretly linked to `mammal`. That is, its `__proto__ p`roperty should point to `mammal`:
+```
+console.log(rabbit.__proto__ === mammal);
+
+// true
+```
+Great! This means that now, `rabbit` extends `mamma`l (i.e., `rabbit` inherits from `mammal`). As a result, `rabbit` can access `mammal`'s properties as if it were its own!
+```
+console.log(rabbit.vertebrate);
+// true
+
+console.log(rabbit.earBones);
+// 3
+```
+`Object.create(`) gives us a clean method of establishing prototypal inheritance in JavaScript. We can easily extend the prototype chain this way, and we can have objects inherit from just about any object we want!
+```
+function Animal (name) {
+  this.name = name;
+}
+
+Animal.prototype.walk = function () {
+  console.log(`${this.name} walks!`);
+};
+
+function Cat (name) {
+  Animal.call(this, name);
+  this.lives = 9;
+}
+
+Cat.prototype = Object.create(Animal.prototype);
+
+Cat.prototype.constructor = Cat;
+
+Cat.prototype.meow = function () {
+  console.log('Meow!');
+};
+
+const bambi = new Cat('Bambi');
+
+bambi.meow();
+bambi.walk();
+
+bambi.name;
+```
+### QUESTION 3 OF 4
+Consider the following:
+```
+function Parent() {
+  // ...
+}
+
+function Child() {
+  // ...
+}
+
+Child.prototype = Object.create(Parent.prototype);
+
+const child = new Child();
+```
+The following is then executed:
+
+`child instanceof Parent;`
+What is printed to the console?
+**true**
+
+`Object.create()` takes in a single object as an argument, and returns a new object. That new object's` __proto__ `property is set to whatever was originally passed into `Object.create()`.
+
+In this quiz, `Parent.prototype` was the argument passed into `Object.create()`. The return value of the `expressionObject.create(Parent.prototype)`;was then set to the value of `theChildconstructor'sprototypeproperty`. After that, we instantiate a new object:`child`.
+
+The expression `child instanceof Parent`; returns a boolean indicating whether the Parent constructor exists in the child object's prototype chain. Since we know this is true after executing the first expression (i.e., `Child.prototype = Object.create(Parent.prototype)`;), the console outputs true.
+
+### QUESTION 4 OF 4
+What is true about Object.create()? Select all that apply:
+
+It returns a new object whose `__proto__ `property is set to the object passed into `Object.create()`
+
+Using `Object.create()`, we can have objects inherit from just about any object we want (i.e., not only the prototype)
+
+`Object.create()` allows us to implement prototypal inheritance without mutating the prototype
+
+### Summary
+Inheritance in JavaScript is all about setting up the prototype chain. This allows us to **subclass**, that is, create a "child" object that inherits most or all of a "parent" object's properties and methods. We can then implement any of the child object's unique properties and methods separately, while still retaining data and functionality from its parent.
+
+An object (instance) is secretly linked to its constructor function's prototype object through that instance's` __proto__ `property. **You should never use the __proto__ property in any code you write**. Using `__proto__ `in any code, or even inheriting just the prototype directly, leads to some unwanted side effects.
+
+To efficiently manage inheritance in JavaScript, an effective approach is to avoid mutating the prototype completely. `Object.create()` allows us to do just that, taking in a parent object and returning a new object with its `__proto__ `property set to that parent object.
+
+Further Research
+Inheritance and the prototype chain on MDN (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain_)
+Object.create() on MDN (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create)
 
 
