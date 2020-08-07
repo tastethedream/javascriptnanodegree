@@ -1,3 +1,3 @@
 # javascriptnanodegree
 
-Udacity intermediate JavaScript Nano Degree
+Udacity intermediate JavaScript Nano Degree course notes
