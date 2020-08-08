@@ -103,65 +103,117 @@
        'images/anklyosaurus.png'
   );
   
-  console.log (pigeon);
+
 
 
   // Create Human Object
   // not sure if i need this????
 
   
-  function Human(name, weight, feet, inches, diet){
-      this.name = name;
-      this.weight = weight;
-      this.feet = feet;
-      this.inches = inches;
-      this.diet = diet;
-  }
+function Human(name, weight, feet, inches, diet){
+    this.name = name;
+    this.weight = weight;
+    this.feet = feet;
+    this.inches = inches;
+    this.diet = diet;
+}
+
+function getName(){
+    let name = document.getElementById('name').value;
+//    document.getElementById('dino-compare').innerHTML = name;
+    return name;
+}
+
+function getWeight(){
+    let weight = document.getElementById('weight').value;
+//    document.getElementById('dino-compare').innerHTML = weight;
+    return weight;
+}
+
+ function getFeet(){
+    const feet = document.getElementById('feet').value;
+//    document.getElementById('dino-compare').innerHTML = feet; 
+    return feet;
+ }
+
+function getInches(){
+    const inches = document.getElementById('inches').value;
+//    document.getElementById('dino-compare').innerHTML = inches;
+   
+    return inches;
+}
+
+
+ function getHeight(feet, inches){    
+    let height =  (parseInt(feet) * 12) + parseInt(inches);
+  
+   return height;
+}
+
+// function getHeight(){
+
+
+     
+//     let height =  parseFloat((feet) * 12) + parseFloat(inches);
+//     // document.getElementById('height').value;
+//     // document.getElementById('dino-compare').innerHTML = height;
+   
+//     return height;
+//}
+
+function getDiet(){
+    let diet = document.getElementById('diet').value;
+    document.getElementById('dino-compare').innerHTML = diet;
+    return diet;
+}
+
 
   
   // Use IIFE to get human data from form
 
-  function humanData(){
-      const human =(function(){
-          let name = document.getElementById('name').value;
-          let weight = document.getElementById('weight').value;
-          let feet = document.getElementById('feet').value;
-          let inches = document.getElementById('inches').value;
-          let diet = document.getElementById('diet').value;
-          let image = 'images/human.png';
+//   function humanData(){
+//       const human =(function(){
+//           let name = document.getElementById('name').value;
+//           let weight = document.getElementById('weight').value;
+//           let feet = document.getElementById('feet').value;
+//           let inches = document.getElementById('inches').value;
+//           let diet = document.getElementById('diet').value;
+//           let image = 'images/human.png';
 
-          function getName(){
-           return name;
-          }
+//           function getName(){
+//            return name;
+//           }
 
-          function getWeight(){
-              return weight;
-             }
+//           function getWeight(){
+//               return weight;
+//              }
 
-          function getHeight(){
-              return parseFloat((feet) * 12) + parseFloat(inches);;
-             }   
+//           function getHeight(){
+//               return parseFloat((feet) * 12) + parseFloat(inches);;
+//              }   
 
-          function getDiet(){
-              return diet;
-             }
+//           function getDiet(){
+//               return diet;
+//              }
 
-             function getImage(){
-              return image;
-             }
+//              function getImage(){
+//               return image;
+//              }
 
-             return {
-                 name: getName(),
-                 weight: getWeight(),
-                 height: getHeight(),
-                 diet: getDiet(),
-                 image: getImage()
-             };
-      })();
+//              return {
+//                  name: getName(),
+//                  weight: getWeight(),
+//                  height: getHeight(),
+//                  diet: getDiet(),
+//                  image: getImage()
+//              };
+//       })();
 
-      return human;
-      console.log(human);
-  }
+//       return human;
+    
+//   }
+
+ // console.log(Human);
 
   
 
@@ -206,6 +258,42 @@
       // Add tiles to DOM
 
   // Remove form from screen
-
+   function hideForm(){
+       //dinoCompare.style.display = 'none';
+        document.getElementById('dino-compare').style.display='none';
+      
+   }
 
 // On button click, prepare and display infographic
+
+btn.addEventListener('click', (e) => {
+    // let weight = document.getElementById('weight').value;
+    // document.getElementById('dino-compare').innerHTML = weight;
+  
+    //const humanName = 'button click complete ' + getName();
+    //alert(humanName);
+
+      
+    //const humanWeight = 'button click complete and you are' + getWeight() + 'lbs';
+    //alert(humanWeight);
+
+    //const humanDiet = 'button click complete and you are a  ' + getDiet();
+    //alert(humanDiet);
+ 
+    const tempValue1 = getFeet();
+    //alert(tempValue2);
+
+    const tempValue2 = getInches();
+    //alert(tempValue1);
+
+ 
+
+    const tempValue3 = getHeight(tempValue1, tempValue2);
+    alert(tempValue3);
+
+
+    hideForm();
+
+   
+
+});
