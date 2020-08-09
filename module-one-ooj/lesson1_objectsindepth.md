@@ -47,7 +47,7 @@ const gender = [1,2,3];
 const mixedArray = [number, string, boolean, gender];
 
 console.log(mixedArray);
-  
+
 ```
 ## Objects
 The object is one of the most important data structures in JavaScript. After all, you're currently taking an entire course on object-oriented programming!
@@ -155,7 +155,7 @@ const menu = {
 
 console.log(menu);
 ```
-  
+
 QUESTION 3 OF 6
 Which of the following are features or characteristics of an object? Select all that apply:
 
