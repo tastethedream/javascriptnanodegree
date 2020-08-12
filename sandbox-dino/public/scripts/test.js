@@ -22,6 +22,18 @@ function Nondino(species, weight, height, diet, where, when, fact, image) {
 }
 
 // Create Dino Objects
+
+const pigeon = new Nondino(
+    "Pigeon",
+    0.5,
+    9,
+    "herbavor",
+    "World Wide",
+    "Holocene",
+    ["All birds are living dinosaurs."],
+    "images/pigeon.png"
+);
+
 const triceratops = new Dino(
     "Triceratops",
     13000,
@@ -92,16 +104,7 @@ const pteranodon = new Dino(
     ["Actually a flying reptile, the Pteranodon is not a dinosaur."],
     "images/pteranodon.png"
 );
-const pigeon = new Nondino(
-    "Pigeon",
-    0.5,
-    9,
-    "herbavor",
-    "World Wide",
-    "Holocene",
-    ["All birds are living dinosaurs."],
-    "images/pigeon.png"
-);
+
 // Create Human Object
 // Use IIFE to get human data from form
 let human = new Dino("", "", "", "", "", "", [""], "./images/human.png");
@@ -113,14 +116,26 @@ let human = new Dino("", "", "", "", "", "", [""], "./images/human.png");
 // Only compare with dino so pigeon will keep a static fact and human will not display a fact
 // compare human height with dino height and create a new fact
 
- function compHeight (dino) {
+//  function compHeight (dino) {
+//     if (dino.species !== human.species) {
+//         if (human.height < dino.height) {
+//             dino.fact.push(`${dino.species} is taller than a ${human.species}`);
+//         } else {
+//             dino.fact.push(`${human.species} is shorter than a ${dino.species}`);
+//         }
+//     }
+// };
+
+
+function compHeight (dino) {
     if (dino.species !== human.species) {
-        if (human.height < dino.height) {
-            dino.fact.push(`${dino.species} is taller than a ${human.species}`);
-        } else {
-            dino.fact.push(`${human.species} is shorter than a ${dino.species}`);
-        }
-    }
+
+        const heightCalc = dino.height / human.height
+        const roundHeight = heightCalc.toFixed(1)
+    
+            dino.fact.push(`${dino.species} is ${roundHeight} times taller than ${human.species}`);
+        } 
+    
 };
 
 // Create Dino Compare Method 2
@@ -129,13 +144,25 @@ let human = new Dino("", "", "", "", "", "", [""], "./images/human.png");
 
 function compWeight (dino) {
     if (dino.species !== human.species) {
-        if (human.weight < dino.weight) {
-            dino.fact.push(`${human.species} weighs less than a ${dino.species}`);
-        } else {
-            dino.fact.push(`${human.species} weighs more than a ${dino.species}`);
-        }
-    }
+
+        const weightCalc = dino.weight / human.weight
+        const roundWeight = weightCalc.toFixed(1)
+    
+            dino.fact.push(`${dino.species} is ${roundWeight} times heavier than ${human.species}`);
+        } 
+    
 };
+
+
+// function compWeight (dino) {
+//     if (dino.species !== human.species) {
+//         if (human.weight < dino.weight) {
+//             dino.fact.push(`${human.species} weighs less than a ${dino.species}`);
+//         } else {
+//             dino.fact.push(`${human.species} weighs more than a ${dino.species}`);
+//         }
+//     }
+// };
 
 // Create Dino Compare Method 3
 // compare human diet with dino diet and create a new fact
@@ -151,7 +178,7 @@ function compDiet (dino) {
 
 //create array for dino data to use in the grid
 
-generateArray = () => {
+function generateArray() {
     return [
         triceratops,
         tyrannosaurusRex,
@@ -165,10 +192,10 @@ generateArray = () => {
     ];
 };
 // Generate Tiles for each Dino in Array
-generateGrid = () => {
+
+generateTiles = () => {
     const creatureList = generateArray();
-    return creatureList
-        .map((creature) => {
+    return creatureList.map((creature) => {
             compHeight(creature);
             compWeight(creature);
             compDiet(creature);
@@ -177,8 +204,7 @@ generateGrid = () => {
                     <h3>${creature.species}</h3>
                     <img src="${creature.image}" />
                     <p> 
-                        ${
-                        creature instanceof Dino
+                        ${  creature instanceof Dino
                             ? creature.fact[Math.floor(Math.random() *creature.fact.length)]
                             : creature.fact[0]
                         }
@@ -186,12 +212,15 @@ generateGrid = () => {
                 </div>
                 `;
         })
+
+    // return array as a string
         .join("");
 };
+
 // Add tiles to DOM
 
  function addTilesToDom() {
-    document.getElementById("grid").innerHTML = generateGrid();
+    document.getElementById("grid").innerHTML = generateTiles();
 };
 
 // Remove form from screen
@@ -200,10 +229,12 @@ function hideForm(){
     document.getElementById('dino-compare').style.display='none';
 };
 
-// On button click, prepare and display infographic
+//On button click, prepare and display infographic
+
 document.getElementById("btn").onclick = () => {
     human.species = document.getElementById("name").value;
     human.weight = document.getElementById("weight").value;
+//make value of height in inches
     human.height = document.getElementById("feet").value * 12 + document.getElementById("inches").value;
     human.diet = document.getElementById("diet").value;
     hideForm();
