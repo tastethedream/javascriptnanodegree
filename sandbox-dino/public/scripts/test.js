@@ -116,6 +116,16 @@ let human = new Dino("", "", "", "", "", "", [""], "./images/human.png");
 // Only compare with dino so pigeon will keep a static fact and human will not display a fact
 // compare human height with dino height and create a new fact
 
+//  function compHeight (dino) {
+//     if (dino.species !== human.species) {
+//         if (human.height < dino.height) {
+//             dino.fact.push(`${dino.species} is taller than a ${human.species}`);
+//         } else {
+//             dino.fact.push(`${human.species} is shorter than a ${dino.species}`);
+//         }
+//     }
+// };
+
 
 function compHeight (dino) {
     if (dino.species !== human.species) {
@@ -123,8 +133,8 @@ function compHeight (dino) {
         const heightCalc = dino.height / human.height
         const roundHeight = heightCalc.toFixed(1)
     
-         dino.fact.push(`${dino.species} is ${roundHeight} times taller than ${human.species}`);
-    } 
+            dino.fact.push(`${dino.species} is ${roundHeight} times taller than ${human.species}`);
+        } 
     
 };
 
@@ -138,15 +148,24 @@ function compWeight (dino) {
         const weightCalc = dino.weight / human.weight
         const roundWeight = weightCalc.toFixed(1)
     
-        dino.fact.push(`${dino.species} is ${roundWeight} times heavier than ${human.species}`);
-     } 
+            dino.fact.push(`${dino.species} is ${roundWeight} times heavier than ${human.species}`);
+        } 
     
 };
 
 
+// function compWeight (dino) {
+//     if (dino.species !== human.species) {
+//         if (human.weight < dino.weight) {
+//             dino.fact.push(`${human.species} weighs less than a ${dino.species}`);
+//         } else {
+//             dino.fact.push(`${human.species} weighs more than a ${dino.species}`);
+//         }
+//     }
+// };
+
 // Create Dino Compare Method 3
 // compare human diet with dino diet and create a new fact
-
 function compDiet (dino) {
     if (dino.species !== human.species) {
         if (human.diet === dino.diet) {
@@ -178,22 +197,22 @@ function generateArray() {
 generateTiles = () => {
     const creatureList = generateArray();
     return creatureList.map((creature) => {
-        compHeight(creature);
-        compWeight(creature);
-        compDiet(creature);
-
-    return `
-        <div class="grid-item">
-         <h3>${creature.species}</h3>
-         <img src="${creature.image}" />
-            <p> 
-                ${  creature instanceof Dino
-                 ? creature.fact[Math.floor(Math.random() *creature.fact.length)]
-                 : creature.fact[0]}
-            </p>
-         </div>
-        `;
-     })
+            compHeight(creature);
+            compWeight(creature);
+            compDiet(creature);
+            return `
+                <div class="grid-item">
+                    <h3>${creature.species}</h3>
+                    <img src="${creature.image}" />
+                    <p> 
+                        ${  creature instanceof Dino
+                            ? creature.fact[Math.floor(Math.random() *creature.fact.length)]
+                            : creature.fact[0]
+                        }
+                    </p>
+                </div>
+                `;
+        })
 
     // return array as a string
         .join("");
