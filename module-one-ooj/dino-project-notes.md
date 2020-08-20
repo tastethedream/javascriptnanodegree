@@ -44,3 +44,17 @@ graph LR
   dietFact -->|push new fact|dinoarray[dino array]
   ```
   ![Task 2 Flow Chart ](https://github.com/tastethedream/javascriptnanodegree/blob/master/images/task2.png "Dino Task 2")
+
+  ### In Hindsight
+
+**If doing this project again i would consider the following**
+
+  - break tasks down into smaller chunks and work out what I can already do first
+
+  - Do not start from the top JS doesn't work this way
+
+  - Set up the Node environment straight away  - work in an environmrnt that you feel comfortable
+
+  - Do not wait until you hit a wall to draw a flow chart - start here, an overall one and one for each task
+
+  - Do not delete code use branches to experiment but do not delete things
