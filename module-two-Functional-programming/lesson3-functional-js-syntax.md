@@ -142,3 +142,83 @@ console.log(sales.reduce(reducer));
 
 ## Section 14 Array Methods for Selection
 
+### Flat
+
+Sometimes we have to deal with arrays within arrays - also called **multidimensional arrays**. The bigger and more nested multidimensional arrays get, the harder they become to wrap your head around, and accessing information can be a headache. `flat` is a tool that allows you to undo array nesting to exactly the level you want.
+
+#### Code Example
+
+In the following code, `flat` is applied to arrays: `nestedArr` and `moreNested`. The first instance with `nestedArr`, flat takes away the higher level of nesting. But with `moreNested` we can see when flat takes in an integer parameter, it will flatten 2 levels of nesting. This returns an array without any nesting.
+```
+var nestedArr = [1, 2, [3, 4, [5, 6]]];
+nestedArr.flat();
+console.log(nestedArr)
+// expected output: [1, 2, 3, 4, [5, 6]]
+
+var moreNested = [1, 2, [3, 4, [5, 6]]];
+moreNested.flat(2);
+console.log(moreNested)
+// expected output: [1, 2, 3, 4, 5, 6]
+```
+
+### Find
+
+Locating unique values in arrays is another indispensable ability. JavaScript `find` and Includes methods perform similar actions, but their use cases differ. Here are their Mozilla definitions side by side:
+
+**Find Method**
+
+`find` returns the value of the **first** element in the provided array that satisfies the provided testing function.
+
+**Include Method**
+
+`includes `determines whether an array contains a certain value among its entries, returning **true or false** as appropriate.
+
+`find` is most useful when you are not looking for a specific value. It is best to use `find` when you want to see if any item in array meets a criteria. In this way, `find` is a little bit like`filter`, in that they both run every item in array through a function to determine if the item passes the function’s requirement. But, `find` is a little bit simpler in that it only passes a single argument (the current value) and returns a single value from the array (the first one to pass the function’s test).
+
+#### Code Example
+
+The code below shows that if no value in the array is found to meet the criteria, `undefined` will be the result. Also, if there are multiple items that match the criteria, it does not change the output.
+```
+const bestBars = [
+    'Mos Eisley Cantina',
+    'Clark`s Bar',
+    '10 Forward',
+    'The Restaurant at the End of the Universe',
+    'The Prancing Pony',
+    '10 Forward',
+]
+
+const test1 = bestBars.find(x => x === 'Quark`s Bar')
+const test2 = bestBars.find(x => x === '10 Forward')
+
+console.log(test1) //expected output: undefined
+console.log(test2) // expected output: 10 Forward
+```
+
+### Include
+
+`includes` is most useful when are looking for the existence of a specific value. All you have to do is provide the value you are looking for, and includes will return *true* if it finds it and *false* if it does not.
+
+It is good to note that neither find nor includes is a good tool to use if you need to know how many times a value is found in an array. To do that, you would have to use map or filter.
+
+#### Code Example
+
+In the following code, you can see that includes only returns a `true` or `false` value. Includes can also be used on strings.
+```
+const bestBars = [
+    'Mos Eisley Cantina',
+    'Clark`s Bar',
+    '10 Forward',
+    'The Restaurant at the End of the Universe',
+    'The Prancing Pony',
+    '10 Forward',
+]
+
+const test1 = bestBars.includes('Quark`s Bar')
+const test2 = bestBars.includes('The Prancing Pony')
+
+console.log(test1) // expected output: false
+console.log(test2) // expected output: true
+```
+**see flat-find-include.js for code examples**
+
