@@ -1,6 +1,3 @@
-alert("testing 123");
-
-
 let store = {
     user: { name: "Student" },
     apod: '',
@@ -15,9 +12,9 @@ const updateStore = (store, newState) => {
     render(root, store)
 }
 
- const render = async (root, state) => {
-   root.innerHTML = App(state)
- }
+const render = async (root, state) => {
+    root.innerHTML = App(state)
+}
 
 
 // create content
@@ -94,37 +91,38 @@ const ImageOfTheDay = (apod) => {
     }
 }
 
+
+
+
+
+
 // ------------------------------------------------------  API CALLS
 
-// Example API call
-
-const getImageOfTheDay = state => {
-    let { apod } = state;
-  
-    fetch(`https://api.nasa.gov/planetary/apod?api_key=)
-      .then(res => res.json())
-      .then(apod => updateStore(store, { apod }));
-    return apod;
-  };
 
 
+const getImageOfTheDay = (state) => {
+    let { apod } = state
+
+    fetch(`http://localhost:8080/apod`)
+        .then(res => res.json())
+        .then(apod => updateStore(store, { apod }))
+
+    return data
+}
+
+// ------------------------------------------------------   Remove welcome screen
 
 
-// const getImageOfTheDay = state => {
-//     let { apod } = state;
+function hideWelcome(){
+    document.getElementById('welcomeScreen').style.display='none';
+    alert("curiosity was clicked");
+};
 
-//     const api_key = process.env.API || 'XXX';  
-//     const nasa_url = 'https://api.nasa.gov/planetary/apod?api_key=' + api_key;
-  
-//     fetch(nasa_url)
-//         .then(res => res.json())
-//         .then(apod => updateStore(store, { apod }));
+//On button click, prepare and display the correct API data
 
-//     return apod;
-// };
+document.getElementById("curiosity").onclick = () => {
 
+    hideWelcome();
+    app();
 
-
-  
-
-
+};

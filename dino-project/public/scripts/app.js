@@ -116,15 +116,7 @@ let human = new Dino("", "", "", "", "", "", [""], "./images/human.png");
 // Only compare with dino so pigeon will keep a static fact and human will not display a fact
 // compare human height with dino height and create a new fact
 
-//  function compHeight (dino) {
-//     if (dino.species !== human.species) {
-//         if (human.height < dino.height) {
-//             dino.fact.push(`${dino.species} is taller than a ${human.species}`);
-//         } else {
-//             dino.fact.push(`${human.species} is shorter than a ${dino.species}`);
-//         }
-//     }
-// };
+
 
 
 function compHeight (dino) {
@@ -154,15 +146,7 @@ function compWeight (dino) {
 };
 
 
-// function compWeight (dino) {
-//     if (dino.species !== human.species) {
-//         if (human.weight < dino.weight) {
-//             dino.fact.push(`${human.species} weighs less than a ${dino.species}`);
-//         } else {
-//             dino.fact.push(`${human.species} weighs more than a ${dino.species}`);
-//         }
-//     }
-// };
+
 
 // Create Dino Compare Method 3
 // compare human diet with dino diet and create a new fact

@@ -1,8 +1,10 @@
-let store = {
+const store = Immutable.Map({
     user: { name: "Student" },
     apod: '',
     rovers: ['Curiosity', 'Opportunity', 'Spirit'],
-}
+    roverInfo: '',
+    roverImage: []
+});
 
 // add our markup to the page
 const root = document.getElementById('root')
@@ -15,6 +17,8 @@ const updateStore = (store, newState) => {
 const render = async (root, state) => {
     root.innerHTML = App(state)
 }
+
+
 
 
 // create content
@@ -94,28 +98,12 @@ const ImageOfTheDay = (apod) => {
 // ------------------------------------------------------  API CALLS
 
 // Example API call
-// const getImageOfTheDay = (state) => {
-//     let { apod } = state
+const getImageOfTheDay = (state) => {
+    let { apod } = state
 
-//     fetch(`http://localhost:8080/apod`)
-//         .then(res => res.json())
-//         .then(apod => updateStore(store, { apod }))
+    fetch(`http://localhost:8080/apod`)
+        .then(res => res.json())
+        .then(apod => updateStore(store, { apod }))
 
-//     return data
-// }
-
-// Remove form from screen
-
-function hideWelcome(){
-    document.getElementById('root').style.display='none';
-    ("curiosity was clicked");
-};
-
-//On button click, prepare and display infographic
-
-document.getElementById("curiosity").onclick = () => {
-//make value of height in inches
-  
-    hideWelcome();
-   
-};
+    return data
+}
