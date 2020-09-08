@@ -1,10 +1,12 @@
-const store = Immutable.Map({
+//Create object - maybe use immutable here
+
+alert("testing 123...");
+
+let store = {
     user: { name: "Student" },
     apod: '',
     rovers: ['Curiosity', 'Opportunity', 'Spirit'],
-    roverInfo: '',
-    roverImage: []
-});
+}
 
 // add our markup to the page
 const root = document.getElementById('root')
@@ -17,8 +19,6 @@ const updateStore = (store, newState) => {
 const render = async (root, state) => {
     root.innerHTML = App(state)
 }
-
-
 
 
 // create content
@@ -105,5 +105,5 @@ const getImageOfTheDay = (state) => {
         .then(res => res.json())
         .then(apod => updateStore(store, { apod }))
 
-    return data
+    //return data
 }

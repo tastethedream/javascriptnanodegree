@@ -1,128 +1,171 @@
-let store = {
-    user: { name: "Student" },
+const map = Immutable.Map({
     apod: '',
     rovers: ['Curiosity', 'Opportunity', 'Spirit'],
-}
+    welcome: 'pod',
+    roverData: null,
+    roverPhotos: [],
+  });
+  
+  const root = document.getElementById('root');
+  
+  const render = async (rootParam, state) => {
+    rootParam.innerHTML = App(state);
+  };
+  
+  // listening for load event because page should load before any JS is called
+  window.addEventListener('load', () => {
+    render(root, map);
+  });
+  
+  // populating image array and returning a string height and width may be over written in css
 
-// add our markup to the page
-const root = document.getElementById('root')
+  function RoverImages(imgArray) {
+    const output = imgArray.map(
+      img => `<img src="${img}"/>`
+    );
+    return output.join('');
+  }
+  
+  const updateStore = (storeParam, newState) => {
+    const newMap = storeParam.merge(newState);
+    render(root, newMap);
+  };
+  
 
-const updateStore = (store, newState) => {
-    store = Object.assign(store, newState)
-    render(root, store)
-}
+  function setTab(curiosity) {
+    const newMap = map.set('welcome', curiosity);
+    render(root, newMap);
+  }
 
-const render = async (root, state) => {
-    root.innerHTML = App(state)
-}
-
-
-// create content
-const App = (state) => {
-    let { rovers, apod } = state
-
-    return `
-        <header></header>
-        <main>
-            ${Greeting(store.user.name)}
-            <section>
-                <h3>Put things on the page!</h3>
-                <p>Here is an example section.</p>
-                <p>
-                    One of the most popular websites at NASA is the Astronomy Picture of the Day. In fact, this website is one of
-                    the most popular websites across all federal agencies. It has the popular appeal of a Justin Bieber video.
-                    This endpoint structures the APOD imagery and associated metadata so that it can be repurposed for other
-                    applications. In addition, if the concept_tags parameter is set to True, then keywords derived from the image
-                    explanation are returned. These keywords could be used as auto-generated hashtags for twitter or instagram feeds;
-                    but generally help with discoverability of relevant imagery.
-                </p>
-                ${ImageOfTheDay(apod)}
-            </section>
-        </main>
-        <footer></footer>
-    `
-}
-
-// listening for load event because page should load before any JS is called
-window.addEventListener('load', () => {
-    render(root, store)
-})
-
-// ------------------------------------------------------  COMPONENTS
-
-// Pure function that renders conditional information -- THIS IS JUST AN EXAMPLE, you can delete it.
-const Greeting = (name) => {
-    if (name) {
-        return `
-            <h1>Welcome, ${name}!</h1>
-        `
-    }
-
-    return `
-        <h1>Hello!</h1>
-    `
-}
-
-// Example of a pure function that renders infomation requested from the backend
-const ImageOfTheDay = (apod) => {
-
-    // If image does not already exist, or it is not from today -- request it again
-    const today = new Date()
-    const photodate = new Date(apod.date)
-    console.log(photodate.getDate(), today.getDate());
-
-    console.log(photodate.getDate() === today.getDate());
-    if (!apod || apod.date === today.getDate() ) {
-        getImageOfTheDay(store)
-    }
-
-    // check if the photo of the day is actually type video!
-    if (apod.media_type === "video") {
-        return (`
-            <p>See today's featured video <a href="${apod.url}">here</a></p>
-            <p>${apod.title}</p>
-            <p>${apod.explanation}</p>
-        `)
-    } else {
-        return (`
-            <img src="${apod.image.url}" height="350px" width="100%" />
-            <p>${apod.image.explanation}</p>
-        `)
-    }
-}
-
-
-
-
-
-
-// ------------------------------------------------------  API CALLS
-
-
-
-const getImageOfTheDay = (state) => {
-    let { apod } = state
-
+  
+  // ------------------------------------------------------  API CALLS 
+  const getImageOfTheDay = state => {
+    const stateObj = state.toJS();
+    const { apod } = stateObj;
+  
     fetch(`http://localhost:8080/apod`)
-        .then(res => res.json())
-        .then(apod => updateStore(store, { apod }))
-
-    return data
-}
+      .then(res => res.json())
+      .then(apod => {
+        updateStore(state, { apod });
+      });
+  };
+  
+  const getRoverData = (rover, state) => {
+    fetch(`http://localhost:8080/rover`)
+      .then(response => response.json())
+      .then(r => {
+        const roversByName = {
+        };
+  
+        r.rovers.forEach(roverPram => {
+          roversByName[roverPram.name.toLowerCase()] = roverPram;
+        });
+  
+        const { max_date: maxDate } = roversByName[rover];
+        fetch(`http://localhost:8080/rover/${rover}/${maxDate}`)
+          .then(response => response.json())
+          .then(roverPhotos => {
+            updateStore(state, {
+              roverData: roversByName[rover],
+              roverPhotos: roverPhotos.photos.map(photo => photo.img_src),
+            });
+          });
+      });
+  };
+  // ------------------------------------------------------  API CALLS ABOVE
+  
+  // ------------------------------------------------- COMPONENTS BELOW
+  const ImageOfTheDay = apod => {
+    // If image does not already exist, or it is not from today -- request it again
+    const today = new Date();
+    const photodate = new Date(apod.date);
+    if (
+      (!apod || photodate === today.getDate()) &&
+      !ImageOfTheDay._imagesRequested
+    ) {
+      ImageOfTheDay._imagesRequested = true;
+      getImageOfTheDay(map);
+    }
+  
+    if (!apod) {
+      return `<h1>Loading testing ...</h1>`;
+    }
+    // check if the photo of the day is actually type video!
+    if (apod.media_type === 'video') {
+      return `
+          
+        <div id="pod" class="tabcontent">
+          <p>See today's featured video <a href="${apod.image.url}">here</a></p>
+          <p>${apod.title}</p>
+          <p>${apod.explanation}</p>
+        </div>
+        `;
+    }
+    return `
+        <div id="pod" class="tabcontent">
+            <img src="${apod.image.url}" height="150px" width="100%"/>
+            <p>${apod.image.explanation}</p>
+        </div>            
+        `;
+  };
+  
+  const RoverData = (rover, state) => {
+    if (RoverData._called !== rover) {
+      RoverData._called = rover;
+      getRoverData(rover, state);
+    }
+    if (!state.get('roverData') || !state.get('roverPhotos').size) {
+      return `<h1>Loading...</h1>`;
+    }
+    return `
+      <div class="tabcontent">
+        <h1>Rover Name: ${state.getIn(['roverData', 'name'])}</h1>
+        <ul>
+          <li>Launch date ${state.getIn(['roverData', 'launch_date'])}</li>
+          <li>Landing date  ${state.getIn(['roverData', 'landing_date'])}</li>
+          <li>Status ${state.getIn(['roverData', 'status'])}</li>
+          <li>Most recent photos taken on ${state.getIn(['roverData', 'max_date'])}</li>
+        </ul>
+        ${RoverImages(state.get('roverPhotos').toJS())}
+        </div>
+        `;
+  };
+  // ------------------------------------------------- COMPONENTS ABOVE
+  
+  // create content
+  const App = state => {
+    const stateObj = state.toJS();
+    const { rovers, apod, welcome } = stateObj;
+    const activeRoverArr = rovers.filter(name => welcome === name.toLowerCase());
+    return `
+    <div class="selectionscreen">
+        <h1 id="mainheader"> Mars Rover Dashboard</h1>
+        <h2 id="secondheader">Select Your Rover</h2>
+        <button class="btnstyle" onclick="setTab('curiosity')">Curiosity</button>
+        <button class="btnstyle" onclick="setTab('opportunity')">Opportunity</button>
+        <button class="btnstyle" onclick="setTab('spirit')">Spirit</button>
+     </div>
+      ${
+        activeRoverArr[0]
+          ? RoverData(activeRoverArr[0].toLowerCase(), state)
+          : ImageOfTheDay(apod)
+      }
+      `
+  };
 
 // ------------------------------------------------------   Remove welcome screen
 
 
-function hideWelcome(){
-    document.getElementById('welcomeScreen').style.display='none';
-    alert("curiosity was clicked");
-};
+// function hideWelcome(){
+//     document.getElementById('selectionscreen').style.display='none';
+//     alert("curiosity was clicked");
+// };
 
-//On button click, prepare and display the correct API data
+// //On button click, prepare and display the correct API data
 
-document.getElementById("curiosity").onclick = () => {
+// document.getElementById("curiosity").onclick = () => {
 
-    hideWelcome();
-    app();
+//     hideWelcome();
+//     app();
 
-};
+// };
