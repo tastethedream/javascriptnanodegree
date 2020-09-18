@@ -94,28 +94,28 @@ const ImageOfTheDay = (apod) => {
 // ------------------------------------------------------  API CALLS
 
 // Example API call
-// const getImageOfTheDay = (state) => {
-//     let { apod } = state
+const getImageOfTheDay = (state) => {
+    let { apod } = state
 
-//     fetch(`http://localhost:8080/apod`)
-//         .then(res => res.json())
-//         .then(apod => updateStore(store, { apod }))
+    fetch(`http://localhost:8080/apod`)
+        .then(res => res.json())
+        .then(apod => updateStore(store, { apod }))
 
-//     return data
-// }
+    return data
+}
 
 // Remove form from screen
 
-function hideWelcome(){
-    document.getElementById('root').style.display='none';
-    ("curiosity was clicked");
-};
+// function hideWelcome(){
+//     document.getElementById('root').style.display='none';
+//     ("curiosity was clicked");
+// };
 
-//On button click, prepare and display infographic
+// //On button click, prepare and display infographic
 
-document.getElementById("curiosity").onclick = () => {
-//make value of height in inches
+// document.getElementById("curiosity").onclick = () => {
+// //make value of height in inches
   
-    hideWelcome();
+//     hideWelcome();
    
-};
+// };

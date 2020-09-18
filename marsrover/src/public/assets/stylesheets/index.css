@@ -5,8 +5,8 @@ body {
   flex-direction: column;
   font-family: Arial;
   min-height: 100vh;
-  background: url("/images/mars.jpeg") center no-repeat;
-  background-size: cover;
+  /* background: url("/images/mars.jpeg") center no-repeat;
+  background-size: cover; */
  
 }
 
