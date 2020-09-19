@@ -152,8 +152,209 @@ There are a few things you can note here. First, if you are making an API reques
 
 Another thing that might have stumped you on this exercise is that this is the first time we are dealing with nested Promises. Here, we can't print the message until both the user information and message are available, that's why we had to make the second request in the then statement of the first Promise.
 
-## Advanced Promise Syntax
+## Advanced Promise Syntax for single promises
 
+### New Promise
+
+* Initialises a new promise
+* Only if promise is npt initiated by other code like `fetch()` or `then()`.
+
+```
+new Promise((resolve, reject) => {
+// can do logic here
+// resolve() or reject()
+}
+```
+Promise new initiates a new project. From here you can resolve or reject the new Promise you have made.
+
+### Promise.reject
+
+* Forces a promise to fail
+* Takes reason for faliure as an argument.
+
+Called in a Promise, will cause the `.catch` clause to run in the same way an error does.
+
+### Promise.resolve
+
+* Resolves a promise
+* Can pass in a result value if desired
+
+Called in a Promise, will cause the `.then` clause to run. Can optionally be passed an argument that will go to the next statement.
+
+### Promise.finally
+
+* Runs on bith sucsess and faliure
+* Triggers a promise when settled
+* Typically runs last
+* takes **no** arguments
+* you use this as you do not care what the response was you want it to happen anyway.
+
+Like `.then` or `.catch`, finally is another clause that runs after the other clauses. It runs in both a reject or resolve case.
+
+## Advanced Promise Syntax for multiple promises
+
+### Promise.allSettled
+
+Promise.allSettled takes an argument that is an array of Promises. It waits for all those Promises to resolve and collects the results of each one into a new array of results. The resulting array contains one object per Promise, saying whether that Promise resolved or rejected, along with the value (if it resolved) or the reason for failure (if it rejected). Promise.all itself returns a Promise, so the resulting array is available in the following `.then` statement.
+
+![promise.allSettled](https://video.udacity-data.com/topher/2020/June/5ef3c92b_jsndc3-l2-promise-allsettled/jsndc3-l2-promise-allsettled.jpg)
+
+#### Code Example - promise.allSettled
+
+```
+const book1 = new Promise((resolve, reject) => {
+    setTimeout(resolve, 3000, "Enders Game");
+});
+
+const book2 = new Promise((resolve, reject) => {
+    setTimeout(reject, 4000, "Sorry, not available!");
+});
+
+const book3 = new Promise((resolve, reject) => {
+    setTimeout(resolve, 2000, "Harry Potter and The Prisoner of Azkaban");
+});
+
+const book4 = new Promise((resolve, reject) => {
+    setTimeout(resolve, 1000, "Stranger in a Strange Land");
+});
+
+Promise.allSettled([book1, book2, book3, book4])
+.then(results => {
+    console.log(results)
+    results.forEach(result => console.log(result.value))
+})
+.catch(error => console.log(error));
+```
+
+### Promise.all
+
+This method is almost exactly the same time as Promise.allSettled except for what it returns and how it handles rejected Promises. It takes in an array of Promises and waits for them to resolve, but **the first time it encounters a rejected Promise, it stops waiting for any further Promises and runs its catch clause.** If no Promises reject, it returns an array of the values returned by them. Again like Promise.allSettled, Promise.all returns a Promise, so the resulting array is available in the following then.
+
+![promise.all](https://video.udacity-data.com/topher/2020/June/5ef3bbbe_jsndc3-l2-promise-all/jsndc3-l2-promise-all.jpg)
+
+### Promise.race
+
+`Promise.race` also takes an argument of an array of Promises, but instead of waiting for them all to resolve, it only waits for the fastest one. Whatever Promise fulfills first, whether is resolves or rejects. It will pass the value from the resolution or the error from the rejection to its then statement.
+
+![promise.race](https://video.udacity-data.com/topher/2020/June/5ef3b7a7_jsndc3-promise-race-catch/jsndc3-promise-race-catch.jpg)
+
+#### Example code -  promise.race
+
+```
+const book1 = new Promise((resolve, reject) => {
+    setTimeout(resolve, 3000, "Enders Game");
+});
+
+const book2 = new Promise((resolve, reject) => {
+    setTimeout(reject, 4000, "Sorry, not available!");
+});
+
+const book3 = new Promise((resolve, reject) => {
+    setTimeout(resolve, 2000, "Harry Potter and The Prisoner of Azkaban");
+});
+
+const book4 = new Promise((resolve, reject) => {
+    setTimeout(reject, 1000, "Sorry, not available!");
+});
+
+Promise.race([book1, book2, book3, book4])
+.then(result => {
+    console.log(result);
+})
+.catch(error => console.log("Error!", error));
+```
+## Excercises advanced promises
+
+### Challenge 1
+```
+Promise.allSettled([p1, p2, p3, p4])
+.then(results => {
+    console.log(results);
+    const failed = results.filter(result => result.status === "fulfilled");
+    console.log(`Failed: ${failed.length} ::: Fulfilled: ${results.length - failed.length}`);
+})
+.catch(error => console.log(error));
+```
+Notice how we are able to filter the results to get the ratio of failed to succeeded.
+
+### Challenge 2
+```
+Promise.all([p1, p2, p3, p4])
+.then(results => {
+    console.log(results);
+})
+.catch(error => console.log(error));
+```
+
+### Challenge 3
+```
+Promise.race([p1, p2, p3, p4])
+.then(result => {
+    console.log(result);
+})
+.catch(error => console.log("Error!", error));
+```
+
+### Practice Interview Question
+**Explain the purpose of the finally clause in Promises.**
+
+* Finally runs after either the final .then or .catch
+* Finally is for logic that you want to run in either the resolve or reject case
+* It is optional and should only be added if you have a reason to use it
+
+**Name one Promise method for handling multiple Promises and give one use case for when you might need it.**
+
+Promise.All You need information from multiple sources and you expect them all to resolve. You can use this in any case where it would be considered an error for any of the Promises to reject.
+
+Promise.AllSettled You need to make many requests and get an overview of which requests failed or succeeded, for instance if you need to poll multiple resources to which are available.
+
+Promise.Race You only care about the fastest of a set of Promises. If you are building a timeout or a request that is time sensitive and not important after a certain amount of time, this would be the method to use.
+
+## Lesson Glossary
+
+### Terms
+
+**Promise**
+A JavaScript Promise object is essentially a placeholder for a value that is not available immediately. A promise is asynchronous and represents the result of a request or operation that may succeed or fail.
+
+**Promise States**
+JavaScript Promises have four states. When a promise has been initiated but the result has not yet come back, the promise is PENDING. A promise that succeeded is RESOLVED and a promise that failed is REJECTED. When a promise is either rejected or resolved, its state is SETTLED, which simply means that it is no longer pending, regardless of the result.
+
+**Fetch**
+Fetch is the syntax for a modern promise based HTTP request in JavaScript.
+
+### Quick Syntax Reference
+**New Promise**
+```
+new Promise((reject, resolve) => {
+  // Make your initial request
+  // Promise is now PENDING 
+})
+```
+
+**Resolved Promise Logic**
+```
+.then(data => {
+  // Promise is now SETTLED and RESOLVED
+  // Your logic here
+  // Return a value you want to pass to the next then statement
+})
+```
+
+**Rejected Promise Logic**
+```
+.catch(error => {
+  // Promise is now SETTLED and REJECTED
+  // handle the error
+})
+```
+
+**Fetch**
+```
+fetch(url, options)
+.then(data)
+.catch(error)
+```
 
 
 
